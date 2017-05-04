@@ -2,6 +2,9 @@ import unittest
 from app import app
 
 class ProjectTests(unittest.TestCase):
+    
+    # setup and teardown
+    
     # executed before each test
     def setUp(self):
         app.config['TESTING']=True
@@ -11,10 +14,8 @@ class ProjectTests(unittest.TestCase):
         self.assertEquals(app.debug, False)
     
     # executed after each test
-    def tearDown(self):
-        pass
-    
     # tests
+    
     def test_main_page(self):
         response=self.app.get('/', follow_redirects=True)
         self.assertIn(b'Welcome to the Recipe App!', response.data)

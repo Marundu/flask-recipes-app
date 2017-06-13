@@ -14,6 +14,9 @@ class ProjectTests(unittest.TestCase):
         self.assertEquals(app.debug, False)
     
     # executed after each test
+    def tearDown(self):
+        pass
+    
     # tests
     
     def test_main_page(self):

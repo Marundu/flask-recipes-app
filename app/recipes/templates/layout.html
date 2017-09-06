@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE-edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Recipe App">
+  <meta name="author" content="Marundu Muturi">
+  
+  <title>Recipes</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">  
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+  
+</head>
+
+<body>
+
+  <nav class="navbar navbar-default nav-bar-fixed-top">
+    <div class="container">
+    
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#recipes-navbar-collapse-1 aria-expanded="false">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="{{ url_for('recipes.index') }}">Recipe App</a>
+      </div>
+      
+      <div class="collapse navbar-collapse" id="recipes-navbar-collapse-1">
+        <ul class="nav navbar-nav">
+          <li><a href="#">Breakfast</a></li>
+          <li><a href="#">Lunch</a></li>
+          <li><a href="#">Supper</a></li>
+          <li><a href="#">Dessert</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="#">Welcome!</a></li>
+        </ul>
+      </div> <!--/.nav-collapse -->
+    </div> <!--./container -->
+  </nav>
+  
+  <div class="container">
+    <div class="content">
+      
+      <!-- child template -->
+      
+      {% block content %}
+      {% endblock %}
+      
+    </div>
+    <div class="footer">
+      <hr>
+      <p>Marundu Muturi - 2017</p>
+    </div>
+  </div> <!-- /.container -->
+  
+  <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  
+</body>
+</html>

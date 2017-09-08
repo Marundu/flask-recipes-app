@@ -14,4 +14,3 @@ class Recipe(db.Model):
     
     def __repr__(self):
         return '<title {}>'.format(self.title)
-        #return '<title {}>'.format(self.name) # donno why 'name', not 'title'

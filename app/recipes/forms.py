@@ -1,6 +1,6 @@
 from flask_wtf import Form
-from wtforms import StringField
-from wtforms.validators import DataRequired
+from wtforms import PasswordField, StringField
+from wtforms.validators import DataRequired, Email, EqualTo, Length
 
 class AddRecipeForm(Form):
     recipe_title=StringField('Recipe Title', validators=[DataRequired()])

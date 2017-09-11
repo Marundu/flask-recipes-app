@@ -7,3 +7,8 @@ body {
   color: red;
   font-size: 0.8em;
 }
+
+.success {
+  color: blue;
+  font-size: 0.8em;
+}

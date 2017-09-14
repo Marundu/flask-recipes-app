@@ -4,11 +4,12 @@ from app import app, db
 
 TEST_DB='user.db'
 
-class ProjectTests(unittest.TestCase):
+class UsersTests(unittest.TestCase):
     
     # setup and teardown
     
     # executed before each test
+    
     def setUp(self):
         app.config['TESTING']=True
         app.config['WTF_CSRF_ENABLED']=False
@@ -23,20 +24,20 @@ class ProjectTests(unittest.TestCase):
     # executed after each test
     def tearDown(self):
         pass
+
+    # helper methods
+    def register(self, email, password, confirm):
+        return self.app.post(
+            '/register',
+            data=dict(email=email, password=password, confirm=confirm),
+            follow_redirects=True
+        )        
     
     # tests
     def test_login_page(self):
         response=self.app.get('/login', follow_redirects=True)
         self.assertIn(b'Future site for logging in to the Recipe App.', response.data)
-    
-    # helper methods
-    def register(self, email, password, confirm):
-        return self.app.post(
-            'register/',
-            data=dict(email=email, password=password, confirm=confirm),
-            follow_redirects=True
-        )
-    
+       
     def test_user_registration_form_displays(self):
         response=self.app.get('/register')
         self.assertEqual(response.status_code, 200)

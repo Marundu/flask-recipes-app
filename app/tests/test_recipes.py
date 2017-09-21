@@ -29,13 +29,10 @@ class AppTests(unittest.TestCase):
     
     def test_main_page(self):
         response=self.app.get('/', follow_redirects=True)
-        self.assertIn(b'Welcome!', response.data)
-        self.assertIn(b'Breakfast', response.data)
-        self.assertIn(b'Lunch', response.data)
-        self.assertIn(b'Supper', response.data)
-        self.assertIn(b'Dessert', response.data)
-        self.assertIn(b'Add Recipe', response.data)
-    
+        self.assertIn(b'Recipe App', response.data)
+        self.assertIn(b'Register', response.data)
+        self.assertIn(b'Log In', response.data)
+            
     def test_main_page_query_results(self):
         response=self.app.get('/add', follow_redirects=True)
         self.assertIn(b'Add a New Recipe', response.data)

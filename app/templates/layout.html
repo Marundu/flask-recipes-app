@@ -25,17 +25,19 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="{{ url_for('recipes.index') }}">Recipe App</a>
+          <a class="navbar-brand" href="{{ url_for('recipes.index') }}">Recipe App</a>
       </div>
       
       <div class="collapse navbar-collapse" id="recipes-navbar-collapse-1">
         <ul class="nav navbar-nav">
-          <li><a href="#">Breakfast</a></li>
-          <li><a href="#">Lunch</a></li>
-          <li><a href="#">Supper</a></li>
-          <li><a href="#">Dessert</a></li>
-          <li><a href="{{ url_for('recipes.add_recipe') }}">Add Recipe</a></li>
-          <li><a href="{{ url_for('users.register') }}">Register</a></li>
+          {% if current_user.is_authenticated %}
+            <li><a href="{{ url_for('recipes.index') }}">Recipes</a></li>
+            <li><a href="{{ url_for('recipes.add_recipe') }}">Add Recipe</a></li>
+            <li><a href="{{ url_for('users.logout') }}">Log Out</a></li>
+          {% else %}
+            <li><a href="{{ url_for('users.register') }}">Register</a></li>
+            <li><a href="{{ url_for('users.login') }}">Log In</a></li>
+          {% endif %}
         </ul>
         <ul class="nav navbar-nav navbar-right">
           <li><a href="#">Welcome!</a></li>

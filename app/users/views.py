@@ -16,6 +16,14 @@ from forms import LoginForm, RegisterForm
 
 users_blueprint=Blueprint('users', __name__)
 
+# mail sending helper function
+
+def send_email(subject, recipients, text_body, html_body):
+    msg=Message(subject, recipients=recipients)
+    msg.body=text_body
+    msg.html=html_body
+    mail.send(msg)
+
 # routes
 
 @users_blueprint.route('/register', methods=['GET', 'POST'])
@@ -29,10 +37,11 @@ def register():
                 db.session.add(new_user)
                 db.session.commit()
 
-                msg=Message(subject='Registration Confirmation',
-                            body='Thank you for registering with the Marundu Recipe App!',
-                            recipients=['marundu@gmail.com'])
-                mail.send(msg)
+                send_email('Marundu Recipe App Registration Confirmation',
+                            ['marundu@gmail.com'],
+                            'Thank you for registering with the Marundu Recipe App!',
+                            '<h3>Thank you for registering with the Marundu Recipe App!</h3>'
+                    )
 
                 flash('Thank you for registering!', 'success')
                 return redirect(url_for('recipes.index'))

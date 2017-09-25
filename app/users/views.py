@@ -7,8 +7,9 @@ from flask import url_for
 from flask_login import current_user, login_user, login_required, logout_user
 from flask_mail import Message
 from sqlalchemy.exc import IntegrityError
+from threading import Thread
 
-from app import db, mail
+from app import app, db, mail
 from app.models import User
 from forms import LoginForm, RegisterForm
 
@@ -16,13 +17,20 @@ from forms import LoginForm, RegisterForm
 
 users_blueprint=Blueprint('users', __name__)
 
-# mail sending helper function
+# execute send_email function asynchronously
+
+def send_async_email(msg):
+    with app.app_context():
+        mail.send(msg)
+
+# send_mail helper function
 
 def send_email(subject, recipients, text_body, html_body):
     msg=Message(subject, recipients=recipients)
     msg.body=text_body
     msg.html=html_body
-    mail.send(msg)
+    thr=Thread(target=send_async_email, args=[msg])
+    thr.start()
 
 # routes
 

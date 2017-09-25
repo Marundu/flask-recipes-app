@@ -5,9 +5,10 @@ from flask import redirect
 from flask import request
 from flask import url_for
 from flask_login import current_user, login_user, login_required, logout_user
+from flask_mail import Message
 from sqlalchemy.exc import IntegrityError
 
-from app import db
+from app import db, mail
 from app.models import User
 from forms import LoginForm, RegisterForm
 
@@ -27,6 +28,12 @@ def register():
                 new_user.authenticated=True
                 db.session.add(new_user)
                 db.session.commit()
+
+                msg=Message(subject='Registration Confirmation',
+                            body='Thank you for registering with the Marundu Recipe App!',
+                            recipients=['marundu@gmail.com'])
+                mail.send(msg)
+
                 flash('Thank you for registering!', 'success')
                 return redirect(url_for('recipes.index'))
             except IntegrityError:
@@ -48,7 +55,7 @@ def login():
                 flash('Thank you for logging in, {}!'.format(current_user.email), 'success')
                 return redirect(url_for('recipes.index'))
             else:
-                flash('Incorrect log-in credentials!', 'error')    
+                flash('Incorrect log-in credentials!', 'error') 
     return render_template('login.html', form=form)
 
 @users_blueprint.route('/logout')

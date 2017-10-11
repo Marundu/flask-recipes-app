@@ -1,4 +1,5 @@
 from app import bcrypt, db
+from datetime import datetime
 from sqlalchemy.ext.hybrid import hybrid_method, hybrid_property
 
 class Recipe(db.Model):
@@ -24,11 +25,17 @@ class User(db.Model):
     email=db.Column(db.String, unique=True, nullable=False)
     _password=db.Column(db.Binary(60), nullable=False)
     authenticated=db.Column(db.Boolean, default=False)
+    email_confirmation_sent_on=db.Column(db.DateTime, nullable=True)
+    email_confirmed=db.Column(db.Boolean, nullable=False)
+    email_confirmed_on=db.Column(db.DateTime, nullable=True)
     
-    def __init__(self, email, plaintext_password): 
+    def __init__(self, email, plaintext_password, email_confirmation_sent_on=None): 
         self.email=email
         self.password=plaintext_password
         self.authenticated=False
+        self.email_confirmation_sent_on=email_confirmation_sent_on
+        self.email_confirmed=False
+        self.email_confirmed_on=None
 
     @hybrid_property
     def password(self):

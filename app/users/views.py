@@ -7,7 +7,9 @@ from flask import url_for
 from flask_login import current_user, login_user, login_required, logout_user
 from flask_mail import Message
 from sqlalchemy.exc import IntegrityError
+from itsdangerous import URLSafeTimedSerializer as usts
 from threading import Thread
+from datetime import datetime
 
 from app import app, db, mail
 from app.models import User
@@ -17,22 +19,42 @@ from forms import LoginForm, RegisterForm
 
 users_blueprint=Blueprint('users', __name__)
 
+# helper functions
+
 # execute send_email function asynchronously
 
 def send_async_email(msg):
     with app.app_context():
         mail.send(msg)
 
-# send_mail helper function
+# send_mail
 
-def send_email(subject, recipients, text_body, html_body):
+def send_email(subject, recipients, html_body):
     msg=Message(subject, recipients=recipients)
-    msg.body=text_body
     msg.html=html_body
     thr=Thread(target=send_async_email, args=[msg])
     thr.start()
 
+# confirm email
+
+def send_confirmation_email(user_email):
+    confirm_serializer=usts(app.config['SECRET_KEY'])
+
+    confirm_url=url_for(
+        'users.confirm_email',
+        token=confirm_serializer.dumps(user_email, salt='email-confirmation-salt'),
+        _external=True
+        )
+
+    html=render_template(
+        'email_confirmation.html',
+        confirm_url=confirm_url)
+
+    send_email('Confirm Your Email Address', [user_email], html)   
+
 # routes
+
+# register
 
 @users_blueprint.route('/register', methods=['GET', 'POST'])
 def register():
@@ -45,18 +67,39 @@ def register():
                 db.session.add(new_user)
                 db.session.commit()
 
-                send_email('Marundu Recipe App Registration Confirmation',
-                            ['marundu@gmail.com'],
-                            'Thank you for registering with the Marundu Recipe App!',
-                            '<h3>Thank you for registering with the Marundu Recipe App!</h3>'
-                    )
-
-                flash('Thank you for registering!', 'success')
+                send_confirmation_email(new_user.email)
+                flash('Thank you for registering! Please check your email to confirm your email address.', 'success')
                 return redirect(url_for('recipes.index'))
             except IntegrityError:
                 db.session.rollback()
                 flash('ERROR! Email ({}) already exists.'.format(form.email.data), 'error')
     return render_template('register.html', form=form)
+
+# confirm email
+
+@users_blueprint.route('/confirm/<token>')
+def confirm_email(token):
+    try:
+        confirm_serializer=usts(app.config['SECRET_KEY'])
+        email=confirm_serializer.loads(token, salt='email-confirmation-salt', max_age=3600)
+    except:
+        flash('The confirmation link is invalid or has expired.', 'error')
+        return redirect(url_for('users.login'))
+
+    user=User.query.filter_by(email=email).first()
+
+    if user.email_confirmed:
+        flash('Account already confirmed. Please log in.', 'info')
+    else:
+        user.email_confirmed=True
+        user.email_confirmed_on=datetime.now()
+        db.session.add(user)
+        db.session.commit()
+        flash('Thank you for confirming your email address!', 'info')
+
+    return redirect(url_for('recipes.index'))
+
+# login
 
 @users_blueprint.route('/login', methods=['GET', 'POST'])
 def login():
@@ -74,6 +117,8 @@ def login():
             else:
                 flash('Incorrect log-in credentials!', 'error') 
     return render_template('login.html', form=form)
+
+# logout
 
 @users_blueprint.route('/logout')
 @login_required

@@ -62,12 +62,12 @@ class User(db.Model):
 
     @property
     def is_anonymous(self):
-        '''Always False. Anonymouse users are not supported'''
+        '''Always False. Anonymous users are not supported'''
         return False
 
     def get_id(self):
         '''Return the email address to satisfy Flask-Login requirements'''
-        '''Requirs use of Python 3'''
+        '''Requires use of Python 3'''
         return str(self.id)
     
     def __repr__(self): 

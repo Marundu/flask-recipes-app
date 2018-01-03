@@ -4,9 +4,13 @@ from flask_login import LoginManager
 from flask_bcrypt import Bcrypt
 from flask_mail import Mail
 
+import os
+
 # config
 
-app=Flask(__name__, instance_relative_config=True)
+#app=Flask(__name__, instance_relative_config=True)
+
+app=Flask(__name__, instance_path=os.path.join(os.path.abspath(os.curdir), 'instance'), instance_relative_config=True)
 app.config.from_pyfile('flask.cfg')
 
 db=SQLAlchemy(app)

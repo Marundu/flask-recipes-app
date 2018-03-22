@@ -1,8 +1,8 @@
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
-from flask_login import LoginManager
 from flask_bcrypt import Bcrypt
+from flask_login import LoginManager
 from flask_mail import Mail
+from flask_sqlalchemy import SQLAlchemy
 
 import os
 
@@ -11,10 +11,10 @@ import os
 #app=Flask(__name__, instance_relative_config=True)
 
 app=Flask(
-    __name__, instance_path=os.path.join(os.path.abspath(os.curdir), 'instance'), 
+    __name__, instance_path=os.path.join(os.path.abspath(os.curdir), 'instance'),
     instance_relative_config=True
     )
-    
+
 app.config.from_pyfile('flask.cfg')
 
 db=SQLAlchemy(app)

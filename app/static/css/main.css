@@ -1,6 +1,8 @@
 body {
   padding: 60px 0;
   background: #ffffff;
+  margin-right: auto;
+  margin-left: auto;
 }
 
 .error {
@@ -12,3 +14,4 @@ body {
   color: blue;
   font-size: 0.8em;
 }
+

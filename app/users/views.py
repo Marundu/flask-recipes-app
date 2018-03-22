@@ -13,7 +13,7 @@ from datetime import datetime
 
 from app import app, db, mail
 from app.models import User
-from forms import EmailForm, LoginForm, PasswordForm, RegisterForm
+from .forms import EmailForm, LoginForm, PasswordForm, RegisterForm
 
 # config
 

@@ -4,8 +4,9 @@ from flask import render_template
 from flask import redirect
 from flask import request
 from flask import url_for
+from flask_login import login_required
 
-from forms import AddRecipeForm
+from .forms import AddRecipeForm
 
 from app import db
 from app.models import Recipe
@@ -31,6 +32,7 @@ def index():
     return render_template('recipes.html', recipes=all_recipes)
 
 @recipes_blueprint.route('/add', methods=['GET', 'POST'])
+@login_required
 def add_recipe():
     form=AddRecipeForm(request.form)
     if request.method=='POST':

@@ -40,7 +40,16 @@
           {% endif %}
         </ul>
         <ul class="nav navbar-nav navbar-right">
-          <li><a href="#">Welcome!</a></li>
+        
+        <!-- Link to user profile -->
+          {% if current_user.is_authenticated %}
+            <li><a href="{{ url_for('users.user_profile') }}">{{ current_user.email }}</a></li>
+          {% else %}
+            <li><a href="#">Welcome!</a></li>
+          {% endif %}
+        
+        <!-- ##### -->
+        
         </ul>
       </div> <!--/.nav-collapse -->
     </div> <!--./container -->
@@ -71,7 +80,9 @@
     </div>
     <div class="footer">
       <hr>
-      <p>Marundu Muturi - 2017</p>
+      <!-- Automatically change date and year -->
+      <p>Marundu Muturi &copy; - <script type="text/JavaScript"> document.write(new Date().getFullYear()); </script></p>
+      
     </div>
   </div> <!-- /.container -->
   

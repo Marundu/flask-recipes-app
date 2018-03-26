@@ -5,13 +5,3 @@ body {
   margin-left: auto;
 }
 
-.error {
-  color: red;
-  font-size: 0.8em;
-}
-
-.success {
-  color: blue;
-  font-size: 0.8em;
-}
-

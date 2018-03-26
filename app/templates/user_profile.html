@@ -5,12 +5,12 @@
 
 <div class="user-profile">
   <div class="page-header">
-    <h2>User Profie</h2>
+    <h2>User Profile</h2>
   </div>
   
   <div class="row">
     <div class="col-sm-6">
-      <div class="panel panel-primary"></div>
+      <div class="panel panel-primary">
         <div class="panel-heading">Email Address</div>
         <div class="panel-body">{{ current_user.email }}</div>
       </div>
@@ -27,10 +27,9 @@
       
       <div class="panel panel-info">
         <div class="panel-heading">Statistics</div>
-        <div class="panel-body">Member since: {{ current_user.registered_on.strftime("%A %B %d, %Y") }}</div>
-        
+        <div class="panel-body">Member Since: {{ current_user.registered_on.strftime("%A %B %d, %Y") }}</div>
         {% if current_user.last_logged_in != None %}
-          <div class="panel-body">Last Logged In: {{ current_user.last_logged_in.strftime("%A %B %d, %Y) }}</div>
+          <div class="panel-body">Last Logged In: {{ current_user.last_logged_in.strftime("%A %B %d, %Y") }}</div>
         {% else %}
           <div class="panel-body">First time logged in. Welcome!</div>
         {% endif %}

@@ -82,7 +82,10 @@ def register():
                 new_user.authenticated=True
                 db.session.add(new_user)
                 db.session.commit()
-
+                
+                # Eliminate logging in immediately after registration
+                login_user(new_user)
+                
                 send_confirmation_email(new_user.email)
                 flash('Thank you for registering! Please check your email to confirm your email address.', 'success')
                 return redirect(url_for('recipes.index'))
@@ -125,6 +128,11 @@ def login():
             user=User.query.filter_by(email=form.email.data).first()
             if user is not None and user.is_correct_password(form.password.data):
                 user.authenticated=True
+                
+                # Indicate current user and when they last logged in
+                user.last_logged_in=user.current_logged_in
+                user.current_logged_in=datetime.now()
+                
                 db.session.add(user)
                 db.session.commit()
                 login_user(user)
@@ -147,6 +155,7 @@ def logout():
     flash('Goodbye!', 'info')
     return redirect(url_for('users.login'))
 
+# reset password
 
 @users_blueprint.route('/reset', methods=['GET', 'POST'])
 def reset():
@@ -194,3 +203,10 @@ def reset_with_token(token):
         return redirect(url_for('users.login'))
 
     return render_template('reset_password_with_token.html', form=form, token=token)
+
+# user profile
+
+@users_blueprint.route('/user_profile')
+@login_required
+def user_profile():
+    return render_template('user_profile.html')

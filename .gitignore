@@ -7,8 +7,4 @@ __pycache__/
 
 .idea/
 
-/instance
-
-recipe_app_psql_details.txt
-psqlmanenos.txt
-flask.cfg
+/instance/flask.cfg

@@ -122,14 +122,38 @@ class UsersTests(unittest.TestCase):
     
     def test_email_change_without_logging_in(self):
         response=self.app.get('/email_change')
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 302)
         self.assertIn(b'You should be redirected automatically to target URL', response.data)
         self.assertIn(b'/login?next=%2Femail_change', response.data)
         response=self.app.post('/email_change', data=dict(email='email@email.com'), follow_redirects=True)
         self.assertEqual(response.status_code, 200)
         self.assertIn(b'Log In', response.data)
         self.assertIn(b'Need an account?', response.data)
-
+    
+    def test_password_change_page(self):
+        self.app.get('/register', follow_redirects=True)
+        self.register('email@email.com', 'password123', 'password123')
+        response=self.app.get('/password_change')
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b'Change Password', response.data)
+    
+    def test_password_change(self):
+        self.app.get('/register', follow_redirects=True)
+        self.register('email@email.com', 'password123', 'password123')
+        response=self.app.post('/password_change', data=dict(password='password1234'), follow_redirects=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b'Your password has been updated!', response.data)
+        self.assertIn(b'User Profile', response.data)
+    
+    def test_password_change_without_logging_in(self):
+        response=self.app.get('/password_change')
+        self.assertEqual(response.status_code, 302)
+        self.assertIn(b'You should be redirected automatically to target URL', response.data)
+        self.assertIn(b'/login?next=%2Fpassword_change', response.data)
+        response=self.app.post('/password_change', data=dict(password='password1234'), follow_redirects=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b'Log In', response.data)
+        self.assertIn(b'Need an Account?', response.data)
 
 if __name__=='__main__':
     unittest.main()

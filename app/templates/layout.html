@@ -43,7 +43,7 @@
         
         <!-- Link to user profile -->
           {% if current_user.is_authenticated %}
-            <li><a href="{{ url_for('users.user_profile') }}">{{ current_user.email }}</a></li>
+            <li><a href="{{ url_for('users.user_profile') }}">{{ current_user.email.split("@")[0] }}</a></li>
           {% else %}
             <li><a href="#">Welcome!</a></li>
           {% endif %}

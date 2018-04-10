@@ -20,7 +20,7 @@
         <div class="panel-body"><a href="{{ url_for('users.user_email_change') }}">Change Email Address</a></div>
         <div class="panel-body"><a href="{{ url_for('users.user_password_change') }}">Change Password</a></div>
         {% if not current_user.email_confirmed %}
-          <div class="panel-body"><a href="#">Resend Email Confirmation</a></div>
+          <div class="panel-body"><a href="{{ url_for('users.resend_email_confirmation') }}">Resend Email Confirmation</a></div>
         {% endif %}
       </div>
       

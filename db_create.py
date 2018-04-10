@@ -12,20 +12,21 @@ db.create_all()
 recipe1=Recipe('Omena', 'Omena cooked with onion and pepper.')
 recipe2=Recipe('Scrambled Eggs', 'Eggs fried with onions, tomatoes, and green peppers.')
 recipe3=Recipe('Chicken Biriani', 'Stewed chicken in spices.')
+recipe4=Recipe('Kamande', 'Fried lentils in onions and spices')
 
-# db.session.add([recipe1, recipe2, recipe3])
-db.session.add(recipe1)
-db.session.add(recipe2)
-db.session.add(recipe3)
+# add recipes to db
+
+db.session.add_all([recipe1, recipe2, recipe3, recipe4])
 
 # insert user data
 user1=User('ruf@ruf.com', 'password123')
 user2=User('me@marundu.co.ke', 'ovacodol')
 user3=User('covfefe@cov.com', 'password')
+user4=User('marundu@gmail.com', 'oldpassword')
 
-db.session.add(user1)
-db.session.add(user2)
-db.session.add(user3)
+# add users to db
+
+db.session.add_all([user1, user2, user3, user4])
 
 # commit the changes
 db.session.commit()

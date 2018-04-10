@@ -136,7 +136,7 @@ def login():
                 db.session.add(user)
                 db.session.commit()
                 login_user(user)
-                flash('Thank you for logging in, {}!'.format(current_user.email), 'success')
+                flash('Thank you for logging in, {}!'.format(current_user.email.split('@')[0]), 'success') # get user name from email address
                 return redirect(url_for('recipes.index'))
             else:
                 flash('Incorrect log-in credentials!', 'error') 
@@ -210,3 +210,30 @@ def reset_with_token(token):
 @login_required
 def user_profile():
     return render_template('user_profile.html')
+
+# change email address
+
+@users_blueprint.route('/email_change', methods=['GET', 'POST'])
+@login_required
+def user_email_change():
+    form=EmailForm()
+    if request.method=='POST':
+        if form.validate_on_submit():
+            try:
+                user_check=User.query.filter_by(email=form.email.data).first()
+                if user_check is None:
+                    user=current_user
+                    user.email=form.email.data
+                    user.email_confirmed=False
+                    user.email_confirmed_on=None
+                    user.email_confirmation_sent_on=datetime.now()
+                    db.session.add(user)
+                    db.session.commit()
+                    send_confirmation_email(user.email)
+                    flash('Email changed! Please confirm your new email address (link sent to new email).', 'success')
+                    return redirect(url_for('users.user_profile'))
+                else:
+                    flash('Error! That email address already exists!', 'error')
+            except IntegrityError:
+                flash('Error! That email address already exists!', 'error')
+    return render_template('email_change.html', form=form)

@@ -255,3 +255,16 @@ def user_password_change():
             return redirect(url_for('users.user_profile'))
     
     return render_template('password_change.html', form=form)
+
+# resend confirmation email
+
+@users_blueprint.route('/resend_confirmation')
+@login_required
+def resend_email_confirmation():
+    try:
+        send_confirmation_email(current_user.email)
+        flash('A link has been sent to confirm your email address!', 'success')
+    except IntegrityError:
+        flash('ERROR! Unable to send email confirmation.', 'error')
+    
+    return redirect(url_for('users.user_profile'))

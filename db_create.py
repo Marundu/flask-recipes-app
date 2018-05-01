@@ -19,14 +19,17 @@ recipe4=Recipe('Kamande', 'Fried lentils in onions and spices')
 db.session.add_all([recipe1, recipe2, recipe3, recipe4])
 
 # insert user data
+
+admin_user=User(email='marundu@gmail.com', plaintext_password='adminpassword', role='admin')
+
 user1=User('ruf@ruf.com', 'password123')
 user2=User('me@marundu.co.ke', 'ovacodol')
 user3=User('covfefe@cov.com', 'password')
-user4=User('marundu@gmail.com', 'oldpassword')
+user4=User('madodo@gmail.com', 'oldpassword')
 
 # add users to db
 
-db.session.add_all([user1, user2, user3, user4])
+db.session.add_all([admin_user, user1, user2, user3, user4])
 
 # commit the changes
 db.session.commit()

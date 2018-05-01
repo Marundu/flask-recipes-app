@@ -155,5 +155,31 @@ class UsersTests(unittest.TestCase):
         self.assertIn(b'Log In', response.data)
         self.assertIn(b'Need an Account?', response.data)
 
+    def test_admin_site_valid_access(self):
+        self.create_admin_user()
+        self.app.get('/login', follow_redirects=True)
+        response=self.login('madodo@madodo.com', 'madodopassword')
+        self.assertIn(b'madodo@madodo.com', response.data)
+        self.assertIn(b'View Users (Admin)', response.data)
+        response=self.app.get('/admin')
+        self.assertIn(b'Administrative Page: List of Users', response.data)
+    
+    def test_admin_site_invalid_access(self):
+        response=self.appp.get('/admin')
+        self.assertEqual(response.status_code, 302)
+        self.assertIn(b'You should be redirected automatically to target URL', response.data)
+        self.assertIn(b'/login?next=%2Fadmin', response.data)
+        self.app.get('/register', follow_redirects=True)
+        self.register('email@email.com', 'password123', 'password123')
+        self.app.get('/login', follow_redirects=True)
+        response=self.login('madodo@madodo.com', 'madodopassword')
+        self.assertIn(b'madodo@mododo.com', response.data)
+        self.assertNotIn(b'View Users(Admin)', response.data)
+        response=self.app.get('/admin')
+        self.assertEqual(response.status_code, 403)
+        self.assertIn(b'Forbidden', response.data)
+        self.assertIn(b'You don\'t have permission to access the requested resource. It is either read-protected or not readable by the server.', response.data)
+
+    
 if __name__=='__main__':
     unittest.main()

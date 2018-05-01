@@ -1,3 +1,4 @@
+from flask import abort
 from flask import Blueprint
 from flask import flash
 from flask import render_template
@@ -267,4 +268,16 @@ def resend_email_confirmation():
     except IntegrityError:
         flash('ERROR! Unable to send email confirmation.', 'error')
     
+    return redirect(url_for('users.user_profile'))
+
+# admin page
+
+@users_blueprint.route('/admin')
+@login_required
+def admin():
+    if current_user.role != 'admin':
+        abort(403)
+    else:
+        users=User.query.order_by(User.id).all()
+        return render_template('admin.html', users=users)
     return redirect(url_for('users.user_profile'))

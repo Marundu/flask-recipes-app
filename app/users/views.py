@@ -138,7 +138,8 @@ def login():
                 db.session.commit()
                 login_user(user)
                 flash('Thank you for logging in, {}!'.format(current_user.email.split('@')[0]), 'success') # get user name from email address
-                return redirect(url_for('recipes.index'))
+                #return redirect(url_for('recipes.index'))
+                return redirect(url_for('recipes.user_recipes'))
             else:
                 flash('Incorrect log-in credentials!', 'error') 
     return render_template('login.html', form=form)

@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<div class="user-profile">
+  <div class="page-header">
+    <h2>My Recipes</h2>
+  </div>
+  
+  <table class="table table-striped" id="user_recipes">
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for recipe in user_recipes %}
+      <tr>
+        <td>{{ recipe.recipe_title }}</td>
+        <td>{{ recipe.recipe_description }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% endblock %}

@@ -9,7 +9,7 @@ from flask_login import current_user, login_required
 from .forms import AddRecipeForm
 
 from app import db
-from app.models import Recipe
+from app.models import Recipe, User
 
 # config
 

@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<div class="user-profile">
+  <div class="page-header">
+    <h2>{{ recipe.Recipe.recipe_title }}</h2>
+  </div>
+  
+  <div class="row">
+    <div class="panel panel-primary">
+      <div class="panel-heading">Description</div>
+      <div class="panel-body">{{ recipe.Recipe.recipe_description }}</div>
+    </div>
+    
+    <div class="panel panel-primary">
+      <div class="panel-heading">Public or Private</div>
+      {% if recipe.Recipe.is_public %}
+        <div class="panel-body">Public</div>
+      {% else %}
+        <div class="panel-body">Private</div>
+      {% endif %}
+    </div>
+    
+    <div class="panel panel-primary">
+      <div class="panel-heading">User</div>
+      <div class="panel-body">{{ recipe.User.email.split("@")[0] }}</div>
+    </div>
+    
+  </div>
+</div>
+
+{% endblock %}

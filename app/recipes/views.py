@@ -33,6 +33,7 @@ def public_recipes():
     all_public_recipes=Recipe.query.filter_by(is_public=True)
     return render_template('public_recipes.html', public_recipes=all_public_recipes)
 
+
 # display user recipes 
 
 @recipes_blueprint.route('/recipes')
@@ -40,6 +41,7 @@ def public_recipes():
 def user_recipes():
     all_user_recipes=Recipe.query.filter_by(user_id=current_user.id)
     return render_template('user_recipes.html', user_recipes=all_user_recipes)
+
 
 # add a recipe
 
@@ -52,11 +54,29 @@ def add_recipe():
             new_recipe=Recipe(form.recipe_title.data, form.recipe_description.data, False, current_user.id) # True
             db.session.add(new_recipe)    
             db.session.commit()
-            flash('New Recipe, {}, added!'.format(new_recipe.recipe_title), 'success')
+            flash('New Recipe, {0}, added!'.format(new_recipe.recipe_title), 'success')
             return redirect(url_for('recipes.user_recipes'))
         else:
             flash_errors(form)
             flash('ERROR! Recipe was not added!', 'error')
     
     return render_template('add_recipe.html', form=form)
+
+
+# display recipe details
+
+@recipes_blueprint.route('/recipes/<recipe_id>')
+def recipe_details(recipe_id):
+    recipe_with_user=db.session.query(Recipe, User).join(User).filter(Recipe.id==recipe_id).first()
+    if recipe_with_user is not None:
+        if recipe_with_user.Recipe.is_public:
+            return render_template('recipe_details.html', recipe=recipe_with_user)
+        else:
+            if current_user.is_authenticated and recipe_with_user.Recipe.user_id==current_user.id:
+                return render_template('recipe_details.html', recipe=recipe_with_user)
+            else:
+                flash('Incorrect permissions to access page.', 'error')
+    else:
+        flash('Recipe does not exist.', 'error')
+    return redirect(url_for('recipes.public_recipes'))
 

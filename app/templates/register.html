@@ -9,7 +9,7 @@
 <form action="{{ url_for('users.register') }}" method="post">
   {{ form.csrf_token }}
   <dl>
-    {{ render_field(form.email,placeholder="Email Address") }}
+    {{ render_field(form.email, placeholder="Email Address") }}
     {{ render_field(form.password, placeholder="Password") }}
     {{ render_field(form.confirm, placeholder="Confirm Password") }}
   </dl>

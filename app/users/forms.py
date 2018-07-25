@@ -11,6 +11,7 @@ class LoginForm(Form):
 
 class PasswordForm(Form):
     password=PasswordField('Password', validators=[DataRequired()])
+    confirm=PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password')])
 
 class RegisterForm(Form):
     email=StringField('Email', validators=[DataRequired(), Email(), Length(min=8, max=40)])

@@ -8,11 +8,12 @@
 		<h2>Add a New Recipe</h2>
 	</div>
 
-	<form action="{{ url_for('recipes.add_recipe') }}" method="post">
+	<form action="{{ url_for('recipes.add_recipe') }}" method="post" enctype="multipart/form-data">
 		{{ form.csrf_token }}
 		<dl>
 			{{ render_field(form.recipe_title, placeholder="Recipe Title") }}
 			{{ render_field(form.recipe_description, placeholder="Recipe Description") }}
+			{{ render_field(form.recipe_image) }}
 		</dl>
 		<button class="btn btn-sm btn-success" type="submit">Add Recipe</button>
 	</form>

@@ -8,7 +8,7 @@ from flask_login import current_user, login_required
 
 from .forms import AddRecipeForm
 
-from app import db
+from app import db, images
 from app.models import Recipe, User
 
 # config
@@ -48,10 +48,12 @@ def user_recipes():
 @recipes_blueprint.route('/add', methods=['GET', 'POST'])
 @login_required
 def add_recipe():
-    form=AddRecipeForm(request.form)
+    form=AddRecipeForm()
     if request.method=='POST':
         if form.validate_on_submit():
-            new_recipe=Recipe(form.recipe_title.data, form.recipe_description.data, False, current_user.id) # True
+            filename=images.save(request.files['recipe_image'])
+            url=images.url(filename)
+            new_recipe=Recipe(form.recipe_title.data, form.recipe_description.data, current_user.id, True, filename, url)
             db.session.add(new_recipe)    
             db.session.commit()
             flash('New Recipe, {0}, added!'.format(new_recipe.recipe_title), 'success')

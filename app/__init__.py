@@ -3,6 +3,7 @@ from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
 from flask_mail import Mail
 from flask_sqlalchemy import SQLAlchemy
+from flask_uploads import UploadSet, IMAGES, configure_uploads
 
 import os
 
@@ -24,6 +25,12 @@ mail=Mail(app)
 login_manager=LoginManager()
 login_manager.init_app(app)
 login_manager.login_view='users.login'
+
+
+# Configure image uploading via Flask-Uploads
+
+images=UploadSet('images', IMAGES)
+configure_uploads(app, images)
 
 from app.models import User
 
@@ -54,4 +61,3 @@ def page_forbidden(e):
 @app.errorhandler(410)
 def page_gone(e):
     return render_template('410.html'), 410
-

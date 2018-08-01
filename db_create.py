@@ -1,16 +1,15 @@
 from app import db
-from app.models import Recipe
-from app.models import User
+from app.models import Recipe, User
 
 # drop existing database tables
 
 print 'Dropping existing database tables...'
-db.drop_all() 
+db.drop_all()
 
 # create the database and the database tables
 
 print 'Creating database tables...'
-db.create_all() 
+db.create_all()
 
 # insert user data
 
@@ -26,12 +25,17 @@ user4=User(email='madodo@gmail.com', plaintext_password='oldpassword', role='use
 print 'Inserting user data...'
 db.session.add_all([admin_user, user1, user2, user3, user4])
 
-# insert recipe data: title, description, is_public, user_id
+# insert recipe data: title, description, user_id, is_public
 
-recipe1=Recipe('Omena', 'Omena cooked with onion and pepper.', False, admin_user.id)
-recipe2=Recipe('Scrambled Eggs', 'Eggs fried with onions, tomatoes, and green peppers.', True, admin_user.id)
-recipe3=Recipe('Chicken Biriani', 'Stewed chicken in spices.', True, user1.id)
-recipe4=Recipe('Kamande', 'Fried lentils in onions and spices', True, user3.id)
+# recipe1=Recipe('Omena', 'Omena cooked with onion and pepper.', False, admin_user.id)
+# recipe2=Recipe('Scrambled Eggs', 'Eggs fried with onions, tomatoes, and green peppers.', True, admin_user.id)
+# recipe3=Recipe('Chicken Biriani', 'Stewed chicken in spices.', True, user1.id)
+# recipe4=Recipe('Kamande', 'Fried lentils in onions and spices', True, user3.id)
+
+recipe1=Recipe('Omena', 'Omena cooked with onion and pepper.', admin_user.id, False)
+recipe2=Recipe('Scrambled Eggs', 'Eggs fried with onions, tomatoes, and green peppers.', admin_user.id, True)
+recipe3=Recipe('Chicken Biriani', 'Stewed chicken in spices.', user1.id, True)
+recipe4=Recipe('Kamande', 'Fried lentils in onions and spices', user3.id, True)
 
 # add recipes to db
 
@@ -41,4 +45,4 @@ db.session.add_all([recipe1, recipe2, recipe3, recipe4])
 # commit the changes
 db.session.commit()
 
-print 'Done!' 
+print 'Done!'

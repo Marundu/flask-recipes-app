@@ -11,3 +11,5 @@ ref_db_create.py
 
 /instance
 /instance/flask.cfg
+/app/static/img
+

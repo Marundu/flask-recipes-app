@@ -26,6 +26,10 @@
       <div class="panel-body">{{ recipe.User.email.split("@")[0] }}</div>
     </div>
     
+    {% if recipe.Recipe.image_url %}
+      <img src="{{ recipe.Recipe.image_url }}" alt="{{ recipe.Recipe.image_filename }}" style="width:600px;height:450px;">
+    {% endif %}
+    
   </div>
 </div>
 

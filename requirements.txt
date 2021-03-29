@@ -57,7 +57,7 @@ oauth2==1.9.0.post1
 Pillow==5.0.0
 psycopg2==2.7.3.2
 pycparser==2.18
-Pygments==2.2.0
+Pygments==2.7.4
 python-dateutil==2.6.1
 python-editor==1.0.3
 python-mimeparse==1.6.0

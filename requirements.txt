@@ -45,7 +45,7 @@ jieba==0.35
 jieba3k==0.35.1
 Jinja2==2.8
 lxml==4.2.1
-Mako==1.0.6
+Mako==1.2.2
 Markdown==2.6.6
 MarkupSafe==0.23
 mimerender==0.6.0
